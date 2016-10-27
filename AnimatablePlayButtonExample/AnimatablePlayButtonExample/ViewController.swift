@@ -14,19 +14,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .blackColor()
+        view.backgroundColor = .black
         
         let button = AnimatablePlayButton(lengthOfSize: 120)
-        button.center = CGPointMake(CGRectGetMidX(view.frame), CGRectGetMidY(view.frame))
-        button.bgColor = .blackColor()
-        button.color = .whiteColor()
-        button.addTarget(self, action: Selector("tapped:"), forControlEvents: UIControlEvents.TouchUpInside)
-        
+        button.center = CGPoint(x:view.frame.midX,y: view.frame.midY)
+        button.bgColor = .black
+        button.color = .white
+        button.addTarget(self, action: #selector(self.tapped), for: UIControlEvents.touchUpInside)
+        button.select()
         view.addSubview(button)
     }
     
     func tapped(sender: AnimatablePlayButton) {
-        if sender.selected {
+        if sender.isSelected {
             sender.deselect()
         } else {
             sender.select()

@@ -93,16 +93,18 @@ open class AnimatablePlayButton: UIButton {
         pauseLeftMover.path = pausePath
         pauseRight.path = pausePath
         pauseRightMover.path = pausePath
+        
         playTop.path =  {
             let path = CGMutablePath()
             path.move(to: CGPoint(x: 0, y: 0))
-            path.move(to: CGPoint(x: bounds.width, y: bounds.height / 2))
+            path.addLine(to: CGPoint(x: bounds.width, y: bounds.height / 2))
             return path
             }()
+        
         playBottom.path = {
             let path = CGMutablePath()
             path.move(to: CGPoint(x: 0, y: bounds.height))
-            path.move(to: CGPoint(x: bounds.width, y: bounds.height / 2))
+            path.addLine(to: CGPoint(x: bounds.width, y: bounds.height / 2))
             return path
             }()
         
