@@ -8,41 +8,41 @@
 
 import UIKit
 
-public class AnimatablePlayButton: UIButton {
+open class AnimatablePlayButton: UIButton {
     
-    public var color: UIColor! = .whiteColor() {
+    open var color: UIColor! = .white {
         didSet {
-            pauseLeft.strokeColor = color.CGColor
-            pauseLeftMover.strokeColor = color.CGColor
-            pauseRight.strokeColor = color.CGColor
-            pauseRightMover.strokeColor = color.CGColor
+            pauseLeft.strokeColor = color.cgColor
+            pauseLeftMover.strokeColor = color.cgColor
+            pauseRight.strokeColor = color.cgColor
+            pauseRightMover.strokeColor = color.cgColor
         }
     }
-    public var bgColor: UIColor! = .blackColor() {
+    open var bgColor: UIColor! = .black {
         didSet {
             backgroundColor = bgColor
-            playTop.strokeColor = bgColor.CGColor
-            playBottom.strokeColor = bgColor.CGColor
+            playTop.strokeColor = bgColor.cgColor
+            playBottom.strokeColor = bgColor.cgColor
         }
     }
     
-    private let pauseLeftSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let pauseRightSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let playTopSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let playBottomSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let pauseLeftDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let pauseRightDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let playTopDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
-    private let playBottomDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let pauseLeftSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let pauseRightSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let playTopSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let playBottomSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let pauseLeftDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let pauseRightDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let playTopDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
+    fileprivate let playBottomDeSelectAnimation = CAKeyframeAnimation(keyPath: "transform")
     
-    private var pauseLeft: CAShapeLayer = CAShapeLayer()
-    private var pauseLeftMover: CAShapeLayer = CAShapeLayer()
-    private var pauseRight: CAShapeLayer = CAShapeLayer()
-    private var pauseRightMover: CAShapeLayer = CAShapeLayer()
-    private var playTop: CAShapeLayer = CAShapeLayer()
-    private var playBottom: CAShapeLayer = CAShapeLayer()
+    fileprivate var pauseLeft: CAShapeLayer = CAShapeLayer()
+    fileprivate var pauseLeftMover: CAShapeLayer = CAShapeLayer()
+    fileprivate var pauseRight: CAShapeLayer = CAShapeLayer()
+    fileprivate var pauseRightMover: CAShapeLayer = CAShapeLayer()
+    fileprivate var playTop: CAShapeLayer = CAShapeLayer()
+    fileprivate var playBottom: CAShapeLayer = CAShapeLayer()
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         setup()
         createLayers(frame)
@@ -61,21 +61,21 @@ public class AnimatablePlayButton: UIButton {
     }
     
     convenience public init(origin: CGPoint, lengthOfSize: CGFloat){
-        self.init(frame: CGRectMake(origin.x, origin.y, lengthOfSize, lengthOfSize))
+        self.init(frame: CGRect(x: origin.x, y: origin.y, width: lengthOfSize, height: lengthOfSize))
     }
     
     convenience public init(lengthOfSize: CGFloat){
-        self.init(frame: CGRectMake(0, 0, lengthOfSize, lengthOfSize))
+        self.init(frame: CGRect(x: 0, y: 0, width: lengthOfSize, height: lengthOfSize))
     }
     
     // MARK: - private
-    private func setup(){
+    fileprivate func setup(){
         clipsToBounds = true
-        bgColor = .blackColor()
-        color = .whiteColor()
+        bgColor = .black
+        color = .white
     }
     
-    private func createLayers(frame: CGRect) {
+    fileprivate func createLayers(_ frame: CGRect) {
         
         let pauseLineWidth:CGFloat = bounds.width/5
         let pauseLine:CGFloat = pauseLineWidth * 2
@@ -83,9 +83,9 @@ public class AnimatablePlayButton: UIButton {
         let pauseHeight = bounds.height-(pausePadding*2)
         
         let pausePath: CGPath = {
-            let path = CGPathCreateMutable()
-            CGPathMoveToPoint(path, nil, 0, 0)
-            CGPathAddLineToPoint(path, nil, 0, pauseHeight)
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.addLine(to: CGPoint(x: 0, y: pauseHeight))
             return path
         }()
         
@@ -94,107 +94,107 @@ public class AnimatablePlayButton: UIButton {
         pauseRight.path = pausePath
         pauseRightMover.path = pausePath
         playTop.path =  {
-            let path = CGPathCreateMutable()
-            CGPathMoveToPoint(path, nil, 0, 0)
-            CGPathAddLineToPoint(path, nil, bounds.width, bounds.height / 2)
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.move(to: CGPoint(x: bounds.width, y: bounds.height / 2))
             return path
             }()
         playBottom.path = {
-            let path = CGPathCreateMutable()
-            CGPathMoveToPoint(path, nil, 0, bounds.height)
-            CGPathAddLineToPoint(path, nil, bounds.width, bounds.height / 2)
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: 0, y: bounds.height))
+            path.move(to: CGPoint(x: bounds.width, y: bounds.height / 2))
             return path
             }()
         
         
-        pauseLeft.frame = CGRectMake((bounds.width/5)*1, pausePadding, pauseLine, pauseHeight)
+        pauseLeft.frame = CGRect(x: (bounds.width/5)*1, y: pausePadding, width: pauseLine, height: pauseHeight)
         pauseLeft.lineWidth = pauseLine
         pauseLeft.masksToBounds = true
         layer.addSublayer(pauseLeft)
         
-        pauseLeftMover.frame = CGRectMake((bounds.width/5)*1, pausePadding, pauseLine * 1.25, pauseHeight)
+        pauseLeftMover.frame = CGRect(x: (bounds.width/5)*1, y: pausePadding, width: pauseLine * 1.25, height: pauseHeight)
         pauseLeftMover.lineWidth = pauseLine * 1.25
         pauseLeftMover.masksToBounds = true
         layer.addSublayer(pauseLeftMover)
         
-        pauseRight.frame = CGRectMake((bounds.width/5)*3, pausePadding, pauseLine, pauseHeight)
+        pauseRight.frame = CGRect(x: (bounds.width/5)*3, y: pausePadding, width: pauseLine, height: pauseHeight)
         pauseRight.lineWidth = pauseLine
         pauseRight.masksToBounds = true
         layer.addSublayer(pauseRight)
         
-        pauseRightMover.frame = CGRectMake((bounds.width/5)*3, pausePadding, pauseLine * 1.25, pauseHeight)
+        pauseRightMover.frame = CGRect(x: (bounds.width/5)*3, y: pausePadding, width: pauseLine * 1.25, height: pauseHeight)
         pauseRightMover.lineWidth = pauseLine * 1.25
         pauseRightMover.masksToBounds = true
         layer.addSublayer(pauseRightMover)
         
-        playTop.frame = CGRectMake(0, -bounds.height, bounds.width-1, bounds.height)
+        playTop.frame = CGRect(x: 0, y: -bounds.height, width: bounds.width-1, height: bounds.height)
         playTop.lineWidth = pauseLineWidth * 3
         playTop.masksToBounds = true
         layer.addSublayer(playTop)
         
-        playBottom.frame = CGRectMake(0, bounds.height, bounds.width-1, bounds.height)
+        playBottom.frame = CGRect(x: 0, y: bounds.height, width: bounds.width-1, height: bounds.height)
         playBottom.lineWidth = pauseLineWidth * 3
         playBottom.masksToBounds = true
         layer.addSublayer(playBottom)
         
         // SELECT
         pauseLeftSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.51, 0, 0)),
         ]
         pauseRightSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.51, 0, 0)),
         ]
         playTopSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.3, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.3, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
         ]
         playBottomSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.3, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.3, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
         ]
         
         // DESELECT
         pauseLeftDeSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.5, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.2, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.1, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.0, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.5, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.2, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.1, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(pauseLineWidth * 0.0, 0, 0)),
         ]
         pauseRightDeSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.5, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.2, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.1, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.0, 0, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.5, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.2, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.1, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.0, 0, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-pauseLineWidth * 0.0, 0, 0)),
         ]
         playTopDeSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.4, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.3, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.2, 0)),
-            NSValue(CATransform3D: CATransform3DIdentity),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.4, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.3, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, bounds.height * 0.2, 0)),
+            NSValue(caTransform3D: CATransform3DIdentity),
         ]
         playBottomDeSelectAnimation.values = [
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.4, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.3, 0)),
-            NSValue(CATransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.2, 0)),
-            NSValue(CATransform3D: CATransform3DIdentity),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.76, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.4, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.3, 0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(0, -bounds.height * 0.2, 0)),
+            NSValue(caTransform3D: CATransform3DIdentity),
         ]
         
         setPauseProperty(pauseLeftSelectAnimation)
@@ -203,23 +203,23 @@ public class AnimatablePlayButton: UIButton {
         setCommonProperty(playBottomSelectAnimation)
     }
     
-    private func setPauseProperty(animation: CAKeyframeAnimation) {
+    fileprivate func setPauseProperty(_ animation: CAKeyframeAnimation) {
         animation.duration = 0.4
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        animation.removedOnCompletion = false
+        animation.isRemovedOnCompletion = false
         animation.fillMode = kCAFillModeForwards
     }
     
-    private func setCommonProperty(animation: CAKeyframeAnimation) {
+    fileprivate func setCommonProperty(_ animation: CAKeyframeAnimation) {
         animation.duration = 0.4
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.removedOnCompletion = false
+        animation.isRemovedOnCompletion = false
         animation.fillMode = kCAFillModeForwards
     }
     
     // MARK: - public
-    public func select() {
-        selected = true
+    open func select() {
+        isSelected = true
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
@@ -228,16 +228,16 @@ public class AnimatablePlayButton: UIButton {
         
         CATransaction.begin()
         
-        pauseLeftMover.addAnimation(pauseLeftSelectAnimation, forKey: "transform")
-        pauseRightMover.addAnimation(pauseRightSelectAnimation, forKey: "transform")
-        playTop.addAnimation(playTopSelectAnimation, forKey: "transform")
-        playBottom.addAnimation(playBottomSelectAnimation, forKey: "transform")
+        pauseLeftMover.add(pauseLeftSelectAnimation, forKey: "transform")
+        pauseRightMover.add(pauseRightSelectAnimation, forKey: "transform")
+        playTop.add(playTopSelectAnimation, forKey: "transform")
+        playBottom.add(playBottomSelectAnimation, forKey: "transform")
         
         CATransaction.commit()
     }
     
-    public func deselect() {
-        selected = false
+    open func deselect() {
+        isSelected = false
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
@@ -246,10 +246,10 @@ public class AnimatablePlayButton: UIButton {
         
         CATransaction.begin()
         
-        pauseLeftMover.addAnimation(pauseLeftDeSelectAnimation, forKey: "transform")
-        pauseRightMover.addAnimation(pauseRightDeSelectAnimation, forKey: "transform")
-        playTop.addAnimation(playTopDeSelectAnimation, forKey: "transform")
-        playBottom.addAnimation(playBottomDeSelectAnimation, forKey: "transform")
+        pauseLeftMover.add(pauseLeftDeSelectAnimation, forKey: "transform")
+        pauseRightMover.add(pauseRightDeSelectAnimation, forKey: "transform")
+        playTop.add(playTopDeSelectAnimation, forKey: "transform")
+        playBottom.add(playBottomDeSelectAnimation, forKey: "transform")
         
         CATransaction.commit()
     }
