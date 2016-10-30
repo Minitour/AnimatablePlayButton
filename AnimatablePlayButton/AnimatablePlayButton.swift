@@ -220,8 +220,10 @@ open class AnimatablePlayButton: UIButton {
     }
     
     // MARK: - public
-    open func select() {
+    open func select(animate:Bool = true) {
         isSelected = true
+        
+        isAnimated = animate
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
@@ -238,8 +240,9 @@ open class AnimatablePlayButton: UIButton {
         CATransaction.commit()
     }
     
-    open func deselect() {
+    open func deselect(animate:Bool = true) {
         isSelected = false
+        isAnimated = animate
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
@@ -255,4 +258,20 @@ open class AnimatablePlayButton: UIButton {
         
         CATransaction.commit()
     }
+    
+    
+    var isAnimated:Bool = true{
+        didSet{
+            let animations = [pauseLeftSelectAnimation,pauseRightSelectAnimation,playTopSelectAnimation,playBottomSelectAnimation,pauseLeftDeSelectAnimation,pauseRightDeSelectAnimation,playTopDeSelectAnimation,playBottomDeSelectAnimation]
+            
+            for animation in animations{
+                if isAnimated{
+                    animation.duration = 0.4
+                }else{
+                    animation.duration = 0
+                }
+            }
+        }
+    }
+    
 }
