@@ -21,15 +21,15 @@ class ViewController: UIViewController {
         button.bgColor = .black
         button.color = .white
         button.addTarget(self, action: #selector(self.tapped), for: UIControlEvents.touchUpInside)
-        button.select()
+        //button.select()
         view.addSubview(button)
     }
     
     func tapped(sender: AnimatablePlayButton) {
         if sender.isSelected {
-            sender.deselect()
+            sender.deselect(animate: false)
         } else {
-            sender.select()
+            sender.select(animate: false)
         }
     }
 }

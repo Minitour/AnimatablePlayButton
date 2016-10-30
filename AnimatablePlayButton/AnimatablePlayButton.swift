@@ -206,14 +206,14 @@ open class AnimatablePlayButton: UIButton {
     }
     
     fileprivate func setPauseProperty(_ animation: CAKeyframeAnimation) {
-        animation.duration = 0.4
+        //animation.duration = 0.4
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
         animation.isRemovedOnCompletion = false
         animation.fillMode = kCAFillModeForwards
     }
     
     fileprivate func setCommonProperty(_ animation: CAKeyframeAnimation) {
-        animation.duration = 0.4
+        //animation.duration = 0.4
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.isRemovedOnCompletion = false
         animation.fillMode = kCAFillModeForwards
@@ -223,13 +223,13 @@ open class AnimatablePlayButton: UIButton {
     open func select(animate:Bool = true) {
         isSelected = true
         
-        isAnimated = animate
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
         playTop.removeAllAnimations()
         playBottom.removeAllAnimations()
         
+        setAnimationDurations(isAnimated: animate)
         CATransaction.begin()
         
         pauseLeftMover.add(pauseLeftSelectAnimation, forKey: "transform")
@@ -237,39 +237,43 @@ open class AnimatablePlayButton: UIButton {
         playTop.add(playTopSelectAnimation, forKey: "transform")
         playBottom.add(playBottomSelectAnimation, forKey: "transform")
         
+        CATransaction.setAnimationDuration(animate ? 0.4 : 0.01)
+        
         CATransaction.commit()
     }
     
     open func deselect(animate:Bool = true) {
         isSelected = false
-        isAnimated = animate
         
         pauseLeftMover.removeAllAnimations()
         pauseRightMover.removeAllAnimations()
         playTop.removeAllAnimations()
         playBottom.removeAllAnimations()
         
-        CATransaction.begin()
         
+        setAnimationDurations(isAnimated: animate)
+        
+        CATransaction.begin()
         pauseLeftMover.add(pauseLeftDeSelectAnimation, forKey: "transform")
         pauseRightMover.add(pauseRightDeSelectAnimation, forKey: "transform")
         playTop.add(playTopDeSelectAnimation, forKey: "transform")
         playBottom.add(playBottomDeSelectAnimation, forKey: "transform")
         
+        CATransaction.setAnimationDuration(animate ? 0.4 : 0.01)
+        
+        
         CATransaction.commit()
     }
     
     
-    var isAnimated:Bool = true{
-        didSet{
-            let animations = [pauseLeftSelectAnimation,pauseRightSelectAnimation,playTopSelectAnimation,playBottomSelectAnimation,pauseLeftDeSelectAnimation,pauseRightDeSelectAnimation,playTopDeSelectAnimation,playBottomDeSelectAnimation]
-            
-            for animation in animations{
-                if isAnimated{
-                    animation.duration = 0.4
-                }else{
-                    animation.duration = 0
-                }
+    private func setAnimationDurations(isAnimated: Bool){
+        let animations = [pauseLeftSelectAnimation,pauseRightSelectAnimation,playTopSelectAnimation,playBottomSelectAnimation,pauseLeftDeSelectAnimation,pauseRightDeSelectAnimation,playTopDeSelectAnimation,playBottomDeSelectAnimation]
+        
+        for animation in animations{
+            if isAnimated{
+                animation.duration = 0.4
+            }else{
+                animation.duration = 0.01
             }
         }
     }
